@@ -56,10 +56,10 @@ ukraine <- world %>% filter(sovereignt == "Ukraine")
 # Ukraine map
 ggplot() +
   geom_sf(data = ukraine, fill = "lightgray") +  # Карта України
-  geom_sf(data = species_sf, aes(color = species), size = 2) +  # Точки видів
+  geom_sf(data = species_sf, aes(color = species), size = 1) +  # Точки видів
   coord_sf(xlim = c(22, 41), ylim = c(44, 53), expand = FALSE) +  # Межі карти для України
   theme_minimal() +
-  labs(title = "Розповсюдження видів в Україні", x = "Довгота", y = "Широта") +
+  labs(title = "Розповсюдження Quercus robur та Q. rubra в Україні", x = "Довгота", y = "Широта") +
   theme(legend.position = "right")
 
 
