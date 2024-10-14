@@ -1,0 +1,36 @@
+# 1. packages for gbif
+install.packages("dplyr")
+install.packages("rgbif")
+
+library(dplyr)
+library(rgbif)
+
+# download gbif data
+options(gbif_user="YOUR USER NAME HERE")
+options(gbif_pwd="YOUR PASSWORD HERE")
+options(gbif_email="YOUR EMAIL HERE")
+
+occ_download(pred_in("taxonKey", c(2878688, 2880539)), pred("country", "UA"), format = "SIMPLE_CSV")
+
+que <- occ_download_get("0010918-241007104925546", overwrite = TRUE) # insert download key in ""
+que <- occ_download_import(que)
+
+# Select necessary column ("species", "decimalLatitude", "decimalLongitude") from dataframe downloaded from GBIF
+que_n <- que %>% select(species, decimalLatitude, decimalLongitude)
+
+# Delate NA's in dataframe
+que_final <- na.omit(que_n)
+
+# Remove duplicate value in dataframe
+que_fin <- unique(que_final)
+
+# Write .csv file (optional)
+write.csv(que_fin, "quercus.csv")
+
+#To create a table of occurences per species
+summary_que <- table(que_fin$species)
+View(summary_que)
+
+
+
+
