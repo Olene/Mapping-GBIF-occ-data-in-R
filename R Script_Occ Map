@@ -1,0 +1,24 @@
+# Встановлення пакетів
+install.packages("rgeoboundaries")
+
+# Завантажуємо бібліотеки
+library(ggplot2)
+library(sf)
+library(dplyr)
+library(rgeoboundaries)
+
+# Перетворюємо дані в просторовий об'єкт
+que <- read.csv("quercus.csv")
+species_sf <- st_as_sf(que, coords = c("decimalLongitude", "decimalLatitude"), crs = 4326)
+
+# Завантажуємо кордони України, включно з Кримом, з рgeoboundaries
+ukraine <- gb_adm0("UKR")  # Завантажуємо межі України (ADM0 рівень)
+
+# Створюємо карту України
+ggplot() +
+  geom_sf(data = ukraine, fill = "lightgray") +  # Карта України з Кримом
+  geom_sf(data = species_sf, aes(color = species), size = 1) +  # Точки видів
+  coord_sf(xlim = c(22, 41), ylim = c(44, 53), expand = FALSE) +  # Межі карти для України
+  theme_minimal() +
+  labs(title = "Розповсюдження Quercus robur та Q. rubra в Україні", x = "Довгота", y = "Широта") +
+  theme(legend.position = "right")
